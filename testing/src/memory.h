@@ -22,3 +22,25 @@ DWORD getPid(const wchar_t* procName) {
 	CloseHandle(snap);
 	return pid;
 }
+
+
+//READ AND WRITE
+
+template<typename T>
+T read(HANDLE process, uintptr_t address) {
+	T value{};
+	ReadProcessMemory(process, (LPCVOID)address, &value,
+sizeof(T), nullptr);
+	return value;
+}
+
+template<typename T>
+T Write(HANDLE process, uintptr_t address, T value) {
+	WriteProcessMemory(process, (LPVOID)address, &value,
+		sizeof(T), nullptr);
+}
+
+inline uintptr_t readPtr(HANDLE process, uintptr_t address) {
+	return (uintptr_t)read<uint32_t>(process, address);
+	//the games 32 bit: 4-byte pointers
+}
