@@ -7,13 +7,13 @@
 // Coordinates: AssaultCube (Cube engine) uses Z as "up"; X/Y are the ground plane.
 
 // Static addresses, relative to the ac_client.exe module base.
-// Read them as `moduleBase + Pointers::X`. Pointers in the game are 4 bytes - use rpmPtr().
+// Read them as `moduleBase + Pointers::X`. Pointers in the game are 4 bytes - use readPtr().
 namespace Pointers {
-    constexpr uintptr_t LocalPlayer = 0x17E0A8;   // -> Player* (0x18AC00 also holds the local player)
+    constexpr uintptr_t LocalPlayer = 0x18AC00;   // -> Player*. Tested. (0x17E0A8 is the camera: same as you while alive, a different object while dead)
     constexpr uintptr_t EntityList = 0x18AC04;    // -> Player*[PlayerCount], slot 0 is empty
     constexpr uintptr_t PlayerCount = 0x18AC0C;   // int, number of slots in EntityList
     constexpr uintptr_t ViewMatrix = 0x17DFD0;    // float[16], column-major; needed for world-to-screen ESP
-    constexpr uintptr_t FOV = 0x18A7CC;           // int, 75-120 (the game's fov setting). Unverified - only used to size the FOV circle, with a 90 fallback.
+    constexpr uintptr_t FOV = 0x18A7CC;           // float, the game's horizontal fov setting in degrees. Tested (120.0 = saved.cfg = view matrix).
 }
 
 // Offsets inside a player object.
